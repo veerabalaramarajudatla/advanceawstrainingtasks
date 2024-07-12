@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 570865379429.dkr.ecr.ap-south-1.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo "Building the Maven project..."
+      - mvn clean package
+      - cp target/livedemo.war .
+      - echo Building the Docker image...
+      - docker build -t testrepository .
+      - docker tag testrepository:latest 570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push 570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"code-pipeline-ecr","imageUri":"%s"}]'570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest  > imagedefinitions.json
+artifacts:
+    files: imagedefinitions.json
