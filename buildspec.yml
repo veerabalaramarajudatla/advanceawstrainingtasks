@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 570865379429.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w4m8p1h4
   build:
     commands:
       - echo Build started on `date`
@@ -14,13 +14,13 @@ phases:
       - cp target/livedemo.war .
       - echo Building the Docker image...
       - docker build -t testrepository .
-      - docker tag testrepository:latest 570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest
+      - docker tag demobased1234dockerecrrepopublic1:latest public.ecr.aws/w4m8p1h4/demobased1234dockerecrrepopublic1:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest
+      - docker push public.ecr.aws/w4m8p1h4/demobased1234dockerecrrepopublic1:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"code-pipeline-ecr","imageUri":"%s"}]'570865379429.dkr.ecr.ap-south-1.amazonaws.com/testrepository:latest  > imagedefinitions.json
+      - printf '[{"name":"code-pipeline-ecr","imageUri":"%s"}]'public.ecr.aws/w4m8p1h4/demobased1234dockerecrrepopublic1:latest  > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
