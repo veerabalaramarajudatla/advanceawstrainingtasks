@@ -13,14 +13,14 @@ phases:
       - mvn clean package
       - cp target/livedemo.war .
       - echo Building the Docker image...
-      - docker build -t demobased1234dockerecrrepopublic1 .
-      - docker tag demobased1234dockerecrrepopublic1:latest 570865379429.dkr.ecr.ap-south-1.amazonaws.com/demobased1234dockerecrrepopublic1:latest
+      - docker build -t sampleecrrepo .
+      - docker tag sampleecrrepo:latest 570865379429.dkr.ecr.ap-south-1.amazonaws.com/sampleecrrepo:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 570865379429.dkr.ecr.ap-south-1.amazonaws.com/demobased1234dockerecrrepopublic1:latest
+      - docker push 570865379429.dkr.ecr.ap-south-1.amazonaws.com/sampleecrrepo:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"code-pipeline-ecr","imageUri":"%s"}]'570865379429.dkr.ecr.ap-south-1.amazonaws.com/demobased1234dockerecrrepopublic1:latest  > imagedefinitions.json
+      - printf '[{"name":"code-pipeline-ecr","imageUri":"%s"}]'570865379429.dkr.ecr.ap-south-1.amazonaws.com/sampleecrrepo:latest  > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
