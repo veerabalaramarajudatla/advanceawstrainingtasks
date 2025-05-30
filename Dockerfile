@@ -1,5 +1,5 @@
 # Use the official Tomcat 9 image as the base image
-FROM tomcat:9.0.86-jdk21-corretto-al2
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:21
 
 # Remove the default ROOT application
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
